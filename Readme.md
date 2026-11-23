@@ -19,6 +19,19 @@ Open <http://localhost:9090>. Stop the server with Ctrl+C; it shuts down cleanly
 |---|---|---|
 | `-port` | `:9090` | Address to listen on. Use `127.0.0.1:9090` to accept only local connections. |
 | `-tick` | `1s` | How often a snapshot is sent to browsers. |
-| `-window` | `1m` | How far back the statistics look. Also the oldest timestamp accepted by `POST /api/events`. |
+| `-window` | `1m` | How far back the statistics look. |
 | `-runtime` | `1s` | How often goroutine count and heap size are measured. |
 | `-web` | `web` | Folder containing `index.html` and `app.js`. |
+
+Example:
+
+go run . -port :9090 -tick 500ms -window 2m
+
+### Sending an event
+
+
+curl -X POST http://localhost:8080/api/events \  -d '{"name":"check","value":5}'
+
+
+`name` is required. `timestamp` is optional and defaults to the time of receipt. Timestamps older than the time window will get rejected automatically
+
